@@ -24,9 +24,9 @@ interface Transaction {
 }
 
 interface Balance {
-  income: number;
-  outcome: number;
-  total: number;
+  income: string;
+  outcome: string;
+  total: string;
 }
 
 const Dashboard: React.FC = () => {
@@ -35,14 +35,14 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     async function loadTransactions(): Promise<void> {
-      const response = await api.get('/transection');
+      const response = await api.get('/transactions');
 
-      const transectionsFormatted = response.data.transactions.map(
+      const transactionsFormatted = response.data.transactions.map(
         (transaction: Transaction) => ({
           ...transaction,
           formattedValue: formatValue(transaction.value),
           formattedDate: new Date(transaction.created_at).toLocaleDateString(
-            'pt-BR',
+            'pt-br',
           ),
         }),
       );
@@ -53,8 +53,8 @@ const Dashboard: React.FC = () => {
         total: formatValue(response.data.balance.total),
       };
 
-      setTransactions(transectionsFormatted);
-      setBalance(response.data.balance);
+      setTransactions(transactionsFormatted);
+      setBalance(balanceFormatted);
     }
 
     loadTransactions();
